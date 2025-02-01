@@ -11,10 +11,11 @@ import static org.hamcrest.Matchers.*;
 
 public class ApiStart {
   @BeforeAll
-  static void setUp(){
+  static void setUp() {
     RestAssured.baseURI = "https://reqres.in";
     RestAssured.basePath = "/api";
   }
+
   @Test
   @DisplayName("Успешная проверка пользователя по id и email")
   void checkUser() {
@@ -109,6 +110,18 @@ public class ApiStart {
       .body("token", is(notNullValue()))
       .log().status()
       .log().body();
+  }
+
+  @Test
+  @DisplayName("Удаление пользователя")
+  void checkDeleteUser() {
+    given()
+      .when()
+      .delete("/users/{id}", 2)
+      .then()
+      .assertThat()
+      .log().all()
+      .statusCode(204);
   }
 }
 
